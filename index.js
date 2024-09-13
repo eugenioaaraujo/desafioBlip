@@ -19,19 +19,22 @@ app.get('/', (req, res) => {
             body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
             h1 { color: #0096fa; }
         </style>
+        <script src="https://unpkg.com/blip-chat-widget" type="text/javascript"></script>
     </head>
     <body>
         <h1>Bem-vindo ao Inno Chatbot!</h1>
         <p>Clique no ícone para iniciar a conversa com o Inno!</p>
         
         <script>
-            window.onload = function () {
-                new BlipChat()
-                    .withAppKey('aW5ubzooyNWI0YTA5Yy1kOTExlTQ0NjgtYTJhOS1lZDYyY2MxZjE2NTg=')
-                    .withButton({"color":"#0096fa","icon":""})
-                    .withCustomCommonUrl('https://eugenio-araujo-fqyp7.chat.blip.ai/')
-                    .build();
-            }
+            (function () {
+                window.onload = function () {
+                    new BlipChat()
+                        .withAppKey('aW5ubzoyYWI0YTA5Yy1kOTExLTQ0NjgtYTJhOS1lZDYyY2MxZjE2NTg=')
+                        .withButton({"color":"#0096fa","icon":""})
+                        .withCustomCommonUrl('https://eugenio-araujo-fqyp7.chat.blip.ai/')
+                        .build();
+                }
+            })();
         </script>
     </body>
     </html>
