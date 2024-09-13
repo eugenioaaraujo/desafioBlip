@@ -2,7 +2,8 @@ const express = require('express');
 const axios = require('axios');
 
 const app = express();
-const port = 3000;
+// O Heroku define a porta na variável de ambiente process.env.PORT
+const port = process.env.PORT || 3000;
 
 // Middleware para permitir JSON
 app.use(express.json());
