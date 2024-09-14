@@ -42,23 +42,19 @@ app.get('/', async (req, res) => {
                 th, td { padding: 10px; border: 1px solid #ddd; }
                 th { background-color: #0096fa; color: white; }
             </style>
-            <script src="https://unpkg.com/blip-chat-widget" type="text/javascript"></script>
-        </head>
-        <body>
-            <h1>Bem-vindo ao Inno Chatbot!</h1>
-            <p>Clique no ícone para iniciar a conversa com o Inno!</p>
-
-            <script>
-                (function () {
-                    window.onload = function () {
-                        new BlipChat()
-                            .withAppKey('aW5ubzoyYWI0YTA5Yy1kOTExLTQ0NjgtYTJhOS1lZDYyY2MxZjE2NTg=')
-                            .withButton({"color":"#0096fa","icon":""})
-                            .withCustomCommonUrl('https://eugenio-araujo-fqyp7.chat.blip.ai/')
-                            .build();
-                    }
-                })();
-            </script>
+          <script src="https://unpkg.com/blip-chat-widget" type="text/javascript"></script>
+<script>
+    (function () {
+        window.onload = function () {
+            new BlipChat()
+                .withAppKey('aW5ubzI6YjIyOWYwZWItZDBiNS00OTk3LWE0ODMtYWFmMTcyMmNhNjdj')
+                .withButton({"color":"#0096fa","icon":""})
+                .withCustomCommonUrl('https://eugenio-araujo-fqyp7.chat.blip.ai/')
+                .build();
+        }
+    })();
+</script>
+            
 
             <h2>Principais Projetos da Takenet no GitHub</h2>
             <table>
