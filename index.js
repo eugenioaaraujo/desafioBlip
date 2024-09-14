@@ -2,6 +2,9 @@ const express = require('express');
 const axios = require('axios');
 const app = express();
 const port = process.env.PORT || 3000;
+const projetosRoutes = require('./projetosblip'); // Importa o arquivo projetosblip.js
+
+app.use('/api', projetosRoutes); // Define a rota '/api'
 
 // Middleware para permitir JSON
 app.use(express.json());
