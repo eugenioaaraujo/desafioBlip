@@ -43,17 +43,7 @@ app.get('/', async (req, res) => {
                 th { background-color: #0096fa; color: white; }
             </style>
           <script src="https://unpkg.com/blip-chat-widget" type="text/javascript"></script>
-<script>
-    (function () {
-        window.onload = function () {
-            new BlipChat()
-                .withAppKey('aW5ubzI6YjIyOWYwZWItZDBiNS00OTk3LWE0ODMtYWFmMTcyMmNhNjdj')
-                .withButton({"color":"#0096fa","icon":""})
-                .withCustomCommonUrl('https://eugenio-araujo-fqyp7.chat.blip.ai/')
-                .build();
-        }
-    })();
-</script>
+
             
 
             <h2>Principais Projetos da Takenet no GitHub</h2>
