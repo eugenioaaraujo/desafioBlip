@@ -1,3 +1,2 @@
 web: npm start
-web: node index.js
-worker: node projetosblip.js
+web: concurrently "node index.js" "node projetosblip.js"

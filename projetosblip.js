@@ -1,7 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const app = express();
-const port = process.env.PORT || 3001; // Escolha uma porta diferente para esta API
+const port = process.env.PORT || 3001; 
 
 // Middleware para permitir JSON
 app.use(express.json());
