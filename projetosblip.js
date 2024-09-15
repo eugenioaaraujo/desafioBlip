@@ -33,25 +33,23 @@ app.get('/api/projetos', async (req, res) => {
 
 
 
-
 // Endpoint para chamar a API do GPT
 app.post('/api/gpt', async (req, res) => {
     const { prompt } = req.body; // prompt da requisição (pergunta do usuário)
 
     try {
         // Faz a chamada para a API do OpenAI com o prompt
-        const response = await openai.createCompletion({
-            model: 'text-davinci-003', // O modelo GPT que queremos usar
-            prompt: prompt,
-            max_tokens: 150, // Limite de tokens para a resposta
-        });
-
+        const response = await openai.createChatCompletion({
+            messages: "isso é im teste",
+            model: 'gpt-3.5-turbo',
+          });
+        console.log(response);
         // Enviar a resposta de volta para o usuário
         res.json({
             response: response.data.choices[0].text.trim(), // Retorna a resposta do GPT
         });
     } catch (error) {
-        res.status(500).json({ error: 'Erro ao se comunicar com a API GPT' });
+        res.status(500).json({ error: error });
     }
 });
 
