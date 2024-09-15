@@ -40,13 +40,15 @@ app.post('/api/gpt', async (req, res) => {
     try {
         // Faz a chamada para a API do OpenAI com o prompt
         const response = await openai.createChatCompletion({
-            messages: prompt,
+            messages:  [{ role: 'user', content: prompt }], 
             model: 'gpt-3.5-turbo',
           });
-        console.log(response);
+
+        //console.log(JSON.stringify(response.data.choices[0].message.content));
+
         // Enviar a resposta de volta para o usuário
         res.json({
-            response: response.data.choices[0].text.trim(), // Retorna a resposta do GPT
+            response: response.data.choices[0].message.content.trim(), // Retorna a resposta do GPT
         });
     } catch (error) {
         res.status(500).json({ error: error });
