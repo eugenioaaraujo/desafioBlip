@@ -40,7 +40,7 @@ app.post('/api/gpt', async (req, res) => {
     try {
         // Faz a chamada para a API do OpenAI com o prompt
         const response = await openai.createChatCompletion({
-            messages: "isso é im teste",
+            messages: prompt,
             model: 'gpt-3.5-turbo',
           });
         console.log(response);
