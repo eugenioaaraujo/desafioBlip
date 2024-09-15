@@ -1,87 +1,65 @@
 const express = require('express');
 const axios = require('axios');
 const app = express();
-const port = process.env.PORT || 3000;
-const projetosRoutes = require('./projetosblip'); // Importa o arquivo projetosblip.js
+const port = process.env.PORT || 3001;
+const { Configuration, OpenAIApi } = require('openai');
 
-app.use('/api', projetosRoutes); // Define a rota '/api'
+// Configurar a chave da API do OpenAI
+const configuration = new Configuration({
+    apiKey: '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', 
+});
+const openai = new OpenAIApi(configuration);
 
 // Middleware para permitir JSON
 app.use(express.json());
 
-// Servir uma página HTML com o chatbot integrado e a tabela dos projetos do GitHub
-app.get('/', async (req, res) => {
+// Endpoint para buscar os últimos projetos do GitHub da Takenet e retornar em JSON
+app.get('/api/projetos', async (req, res) => {
     try {
         // Chamar a API do GitHub para buscar os repositórios do usuário "takenet"
         const response = await axios.get('https://api.github.com/users/takenet/repos');
         const repos = response.data;
 
-        // Filtrar os 5 principais repositórios
-        const topRepos = repos.slice(0, 5);
+        // Ordenar os repositórios pela data de última atualização (updated_at), mais recentes primeiro
+        const sortedRepos = repos.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+        const latestRepos = sortedRepos.slice(0, 5); // Pegando os 5 mais recentemente atualizados
 
-        // Montar a tabela HTML com os repositórios
-        let tableRows = '';
-        topRepos.forEach(repo => {
-            tableRows += `
-                <tr>
-                    <td>${repo.name}</td>
-                    <td>${repo.language}</td>
-                    <td><a href="${repo.html_url}" target="_blank">Ver no GitHub</a></td>
-                </tr>
-            `;
-        });
-
-        res.send(`
-        <!DOCTYPE html>
-        <html lang="pt-BR">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Inno Chatbot</title>
-            <style>
-                body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
-                h1 { color: #0096fa; }
-                table { width: 80%; margin: 20px auto; border-collapse: collapse; }
-                th, td { padding: 10px; border: 1px solid #ddd; }
-                th { background-color: #0096fa; color: white; }
-            </style>
-          <script src="https://unpkg.com/blip-chat-widget" type="text/javascript"></script>
-
-            
-
-            <h2>Principais Projetos da Takenet no GitHub</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Linguagem</th>
-                        <th>Link</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${tableRows}
-                </tbody>
-            </table>
-        </body>
-        </html>
-        `);
+        // Responder com os repositórios em formato JSON
+        res.json(latestRepos);
     } catch (error) {
-        res.status(500).send('Erro ao buscar os projetos do GitHub.');
+        res.status(500).json({ error: 'Erro ao buscar repositórios do GitHub.' });
     }
 });
 
-// Endpoint para buscar repositórios de um usuário do GitHub
-app.get('/repos/:username', async (req, res) => {
-    const { username } = req.params;
+
+
+// Endpoint para chamar a API do GPT
+app.post('/api/gpt', async (req, res) => {
+    const { prompt } = req.body; // prompt da requisição (pergunta do usuário)
+
     try {
-        const response = await axios.get(`https://api.github.com/users/${username}/repos`);
-        res.json(response.data);
+        // Faz a chamada para a API do OpenAI com o prompt
+        const response = await openai.createChatCompletion({
+            messages:  [{ role: 'user', content: prompt }], 
+            model: 'gpt-3.5-turbo',
+          });
+
+        //console.log(JSON.stringify(response.data.choices[0].message.content));
+
+        // Enviar a resposta de volta para o usuário
+        res.json({
+            response: response.data.choices[0].message.content.trim(), // Retorna a resposta do GPT
+        });
     } catch (error) {
-        res.status(500).json({ error: 'Erro ao buscar repositórios' });
+        res.status(500).json({ error: error });
     }
 });
+
+
 
 // Iniciar o servidor
 app.listen(port, () => {
-    console.log(`Servidor rodando na porta ${port}`);
+    console.log(`API rodando na porta ${port}`);
 });
+
+
